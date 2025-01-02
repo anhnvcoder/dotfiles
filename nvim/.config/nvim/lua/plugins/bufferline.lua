@@ -22,4 +22,4 @@ return {
       { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Close all other buffers" },
     },
   },
-} 
+}

@@ -1,15 +1,21 @@
+vim.g.lazyvim_php_lsp = "intelephense"
+
 return {
+  -- Language support
+  { import = "lazyvim.plugins.extras.lang.terraform" },
+  { import = "lazyvim.plugins.extras.lang.docker" },
+  { import = "lazyvim.plugins.extras.lang.typescript" },
+  { import = "lazyvim.plugins.extras.lang.php" },
   -- LSP Support
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
         -- Web development
-        html = { mason = false },
-        cssls = { mason = false },
-        tailwindcss = { mason = false },
+        html = {},
+        cssls = {},
+        tailwindcss = {},
         emmet_ls = {
-          mason = false,
           filetypes = {
             "html",
             "typescriptreact",
@@ -21,16 +27,16 @@ return {
             "vue",
           },
         },
-        tsserver = { mason = false },
-        ts_ls = { mason = false },
-        volar = { mason = false },
-        eslint = { mason = false },
-        jsonls = { mason = false },
-        pyright = { mason = false },
-        ruff_lsp = { mason = false },
-        terraformls = { mason = false },
-        dockerls = { mason = false },
-        docker_compose_language_service = { mason = false },
+        tsserver = {},
+        volar = {},
+        eslint = {},
+        jsonls = {},
+        pyright = {},
+        ruff_lsp = {},
+        terraformls = {},
+        dockerls = {},
+        docker_compose_language_service = {},
+        intelephense = {},
       },
     },
   },
@@ -57,6 +63,7 @@ return {
         "terraform",
         "hcl",
         "dockerfile",
+        "php",
       },
     },
   },
@@ -66,7 +73,7 @@ return {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
-        -- Web development
+        -- LSP
         "html-lsp",
         "css-lsp",
         "tailwindcss-language-server",
@@ -80,22 +87,27 @@ return {
         "terraform-ls",
         "dockerfile-language-server",
         "docker-compose-language-service",
+        "intelephense",
+
+        -- PHP Tools
+        "phpcs",
+        "php-cs-fixer",
 
         -- Formatters
-        "prettier", -- JavaScript formatter
-        "black", -- Python formatter
-        "isort", -- Python formatter
-        "stylua", -- Lua formatter
+        "prettier",
+        "black",
+        "isort",
+        "stylua",
 
         -- Linters
-        "eslint_d", -- JavaScript linter
-        "stylelint", -- CSS linter
-        "jsonlint", -- JSON linter
-        "shellcheck", -- Shell script linter
-        "yamllint", -- YAML linter
-        "ruff", -- Python linter
-        "tflint", -- Terraform linter
-        "hadolint", -- Dockerfile linter
+        "eslint_d",
+        "stylelint",
+        "jsonlint",
+        "shellcheck",
+        "yamllint",
+        "ruff",
+        "tflint",
+        "hadolint",
       },
     },
   },
@@ -145,11 +157,8 @@ return {
         sh = { "shellcheck" },
         dockerfile = { "hadolint" },
         ["docker-compose"] = { "yamllint" },
+        php = { "phpcs" },
       },
     },
   },
-
-  { import = "lazyvim.plugins.extras.lang.terraform" },
-  { import = "lazyvim.plugins.extras.lang.docker" },
-  { import = "lazyvim.plugins.extras.lang.typescript" },
 }

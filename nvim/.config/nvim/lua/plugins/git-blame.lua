@@ -12,4 +12,4 @@ return {
   keys = {
     { "<leader>tb", "<cmd>GitBlameToggle<CR>", desc = "Toggle git blame" },
   },
-} 
+}
