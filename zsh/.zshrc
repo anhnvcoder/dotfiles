@@ -222,6 +222,7 @@ autoload -Uz compinit && compinit
 
 export PATH=$PATH:$(npm get prefix)/bin
 
+export PYTHON="/opt/homebrew/bin/python3"
 export PATH="/usr/bin/pip3:$PATH"
 export PATH="/usr/bin/python3:$PATH"
 alias python=python3
@@ -236,8 +237,8 @@ export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
-alias lzd='lazydocker'
-alias lzg='lazygit'
+alias ld='lazydocker'
+alias lg='lazygit'
 alias docker-compose="docker compose"
 alias dc="docker-compose"
 alias ghc="gh copilot"
