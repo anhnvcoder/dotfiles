@@ -243,3 +243,14 @@ alias docker-compose="docker compose"
 alias dc="docker-compose"
 alias ghc="gh copilot"
 alias vim="nvim"
+
+#git
+alias g="git"
+alias gs="git status"
+alias ga="git add"
+alias gcm="git commit -m"
+alias gcan="git commit --amend --no-edit"
+alias gco="git checkout"
+alias gcp="git cherry-pick"
+alias glo="git log --oneline"
+
