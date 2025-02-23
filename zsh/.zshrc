@@ -209,48 +209,31 @@ eval "$(zoxide init zsh)"
 
 alias cd="z"
 
-export PATH=${PATH}:/usr/local/mysql/bin/
 #export PATH="/opt/homebrew/opt/php@7.4/bin:$PATH"
 #export PATH="/opt/homebrew/opt/php@7.4/sbin:$PATH"
 #export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"
 #export PATH="/opt/homebrew/opt/php@8.1/sbin:$PATH"
 export PATH="/opt/homebrew/opt/php@8.2/sbin:$PATH"
 export PATH="/opt/homebrew/opt/php@8.2/bin:$PATH"
+export PATH=${PATH}:/usr/local/mysql/bin/
+export PATH=$PATH:$(npm get prefix)/bin
+export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+export PATH="$HOME/.composer/vendor/bin:$PATH"
+export PYTHON="/opt/homebrew/bin/python3"
+export PATH="/usr/bin/pip3:$PATH"
+export PATH="/usr/bin/python3:$PATH"
+
+export HOMEBREW_NO_AUTO_UPDATE=1
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
 autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 
-export PATH=$PATH:$(npm get prefix)/bin
-
-export PYTHON="/opt/homebrew/bin/python3"
-export PATH="/usr/bin/pip3:$PATH"
-export PATH="/usr/bin/python3:$PATH"
 alias python=python3
 alias pip=pip3
-
-export HOMEBREW_NO_AUTO_UPDATE=1
-
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/terragrunt terragrunt
-export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
-
-export PATH="$HOME/.composer/vendor/bin:$PATH"
-
-export DOCKER_DEFAULT_PLATFORM=linux/amd64
 alias ld='lazydocker'
 alias lg='lazygit'
 alias docker-compose="docker compose"
 alias dc="docker-compose"
 alias ghc="gh copilot"
 alias vim="nvim"
-
-#git
-alias g="git"
-alias gs="git status"
-alias ga="git add"
-alias gcm="git commit -m"
-alias gcan="git commit --amend --no-edit"
-alias gco="git checkout"
-alias gcp="git cherry-pick"
-alias glo="git log --oneline"
-

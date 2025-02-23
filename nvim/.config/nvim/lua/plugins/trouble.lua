@@ -1,30 +1,15 @@
 return {
-  {
-    "folke/trouble.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "folke/todo-comments.nvim" },
-    opts = {
-      use_diagnostic_signs = true,
-      focus = true,
-      cmd = "Trouble",
-      action_keys = {
-        close = "q", -- close the trouble list
-        cancel = "<esc>", -- cancel the preview and get back to your last window / buffer / cursor
-        refresh = "r", -- manually refresh
-        jump = { "<cr>", "<tab>" }, -- jump to the diagnostic or open / close folds
-        open_split = { "<c-x>" }, -- open buffer in new split
-        open_vsplit = { "<c-v>" }, -- open buffer in new vsplit
-        open_tab = { "<c-t>" }, -- open buffer in new tab
-        previous = "k", -- previous item
-        next = "j", -- next item
-      },
-      signs = {
-        -- icons / text used for a diagnostic
-        error = "",
-        warning = "",
-        hint = "",
-        information = "",
-        other = "",
-      },
-    },
+  "folke/trouble.nvim",
+  dependencies = { "nvim-tree/nvim-web-devicons", "folke/todo-comments.nvim" },
+  opts = {
+    focus = true,
+  },
+  cmd = "Trouble",
+  keys = {
+    { "<leader>xw", "<cmd>Trouble diagnostics toggle<CR>", desc = "Open trouble workspace diagnostics" },
+    { "<leader>xd", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Open trouble document diagnostics" },
+    { "<leader>xq", "<cmd>Trouble quickfix toggle<CR>", desc = "Open trouble quickfix list" },
+    { "<leader>xl", "<cmd>Trouble loclist toggle<CR>", desc = "Open trouble location list" },
+    { "<leader>xt", "<cmd>Trouble todo toggle<CR>", desc = "Open todos in trouble" },
   },
 }
