@@ -1,7 +1,7 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 local os = require("os")
-local brightness = 0.015
+local brightness = 0.008
 
 -- image setting
 local user_home = os.getenv("HOME")

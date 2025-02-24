@@ -53,3 +53,25 @@ keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) --
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
+
+-- Tab behavior like VSCode
+keymap.set("n", "<Tab>", ">>", { desc = "Indent line" })
+keymap.set("n", "<S-Tab>", "<<", { desc = "De-indent line" })
+keymap.set("i", "<Tab>", function()
+  if vim.fn.pumvisible() == 1 then
+    return "<C-n>"
+  elseif require("luasnip").expand_or_jumpable() then
+    return "<cmd>lua require('luasnip').expand_or_jump()<CR>"
+  else
+    return "<C-t>"  -- Insert mode tab
+  end
+end, { expr = true, silent = true })
+keymap.set("i", "<S-Tab>", function()
+  if vim.fn.pumvisible() == 1 then
+    return "<C-p>"
+  elseif require("luasnip").jumpable(-1) then
+    return "<cmd>lua require('luasnip').jump(-1)<CR>"
+  else
+    return "<C-d>"  -- Insert mode de-indent
+  end
+end, { expr = true, silent = true })
