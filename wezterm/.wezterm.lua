@@ -1,6 +1,23 @@
 local wezterm = require("wezterm")
-
 local config = wezterm.config_builder()
+local os = require("os")
+local brightness = 0.015
+
+-- image setting
+local user_home = os.getenv("HOME")
+
+config.window_background_image_hsb = {
+	-- Darken the background image by reducing it
+	brightness = brightness,
+	hue = 1.0,
+	saturation = 0.8,
+}
+
+-- default background
+local bg_image = user_home .. "/dotfiles/wezterm/background/gohan.jpg"
+
+config.window_background_image = bg_image
+-- end image setting
 
 config.color_scheme = "Tokyo Night"
 config.font = wezterm.font("MesloLGS Nerd Font Mono")
