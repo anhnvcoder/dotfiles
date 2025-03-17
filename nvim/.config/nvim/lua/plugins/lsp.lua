@@ -36,6 +36,8 @@ return {
         "gomodifytags",
         "impl",
         "delve",
+        "typescript-language-server",
+        "eslint-lsp",
       },
     },
   },

@@ -63,7 +63,7 @@ keymap.set("i", "<Tab>", function()
   elseif require("luasnip").expand_or_jumpable() then
     return "<cmd>lua require('luasnip').expand_or_jump()<CR>"
   else
-    return "<C-t>"  -- Insert mode tab
+    return "<C-t>" -- Insert mode tab
   end
 end, { expr = true, silent = true })
 keymap.set("i", "<S-Tab>", function()
@@ -72,6 +72,6 @@ keymap.set("i", "<S-Tab>", function()
   elseif require("luasnip").jumpable(-1) then
     return "<cmd>lua require('luasnip').jump(-1)<CR>"
   else
-    return "<C-d>"  -- Insert mode de-indent
+    return "<C-d>" -- Insert mode de-indent
   end
 end, { expr = true, silent = true })
