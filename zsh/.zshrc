@@ -237,3 +237,4 @@ alias docker-compose="docker compose"
 alias dc="docker-compose"
 alias ghc="gh copilot"
 alias vim="nvim"
+alias y=yarn
