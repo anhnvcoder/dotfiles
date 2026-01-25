@@ -50,6 +50,21 @@ config.window_padding = {
 
 config.keys = {
   {key="Enter", mods="SHIFT", action=wezterm.action{SendString="\x1b\r"}},
+  -- Split panes
+  {key="d", mods="CMD", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
+  {key="d", mods="CMD|SHIFT", action=wezterm.action{SplitVertical={domain="CurrentPaneDomain"}}},
+  -- Navigate panes (Cmd+Shift + hjkl)
+  {key="h", mods="CMD|SHIFT", action=wezterm.action{ActivatePaneDirection="Left"}},
+  {key="l", mods="CMD|SHIFT", action=wezterm.action{ActivatePaneDirection="Right"}},
+  {key="k", mods="CMD|SHIFT", action=wezterm.action{ActivatePaneDirection="Up"}},
+  {key="j", mods="CMD|SHIFT", action=wezterm.action{ActivatePaneDirection="Down"}},
+  -- Resize panes (Cmd+Ctrl + hjkl)
+  {key="h", mods="CMD|CTRL", action=wezterm.action{AdjustPaneSize={"Left", 5}}},
+  {key="l", mods="CMD|CTRL", action=wezterm.action{AdjustPaneSize={"Right", 5}}},
+  {key="k", mods="CMD|CTRL", action=wezterm.action{AdjustPaneSize={"Up", 5}}},
+  {key="j", mods="CMD|CTRL", action=wezterm.action{AdjustPaneSize={"Down", 5}}},
+  -- Close pane
+  {key="w", mods="CMD", action=wezterm.action{CloseCurrentPane={confirm=true}}},
 }
 
 return config
