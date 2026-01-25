@@ -252,7 +252,6 @@ run = 'move-node-to-workspace F'
 if.app-id = 'com.termius-dmg.mac'
 run = 'move-node-to-workspace Y'
 
-
 [[on-window-detected]]
 if.app-id = 'com.spotify.client'
 run = 'move-node-to-workspace S'
@@ -280,4 +279,8 @@ run = 'move-node-to-workspace 1'
 [[on-window-detected]]
 if.app-id = 'com.binarynights.ForkLift'
 run = 'move-node-to-workspace F'
+
+[[on-window-detected]]
+if.app-id = 'com.lbjlaq.antigravity-tools'
+run = 'move-node-to-workspace V'
 
