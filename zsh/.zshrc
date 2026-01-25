@@ -164,16 +164,27 @@ export FIGMA_ACCESS_TOKEN=$(security find-generic-password -a $USER -s FIGMA_ACC
 # Added by Antigravity
 export PATH="/Users/vas/.antigravity/antigravity/bin:$PATH"
 
-# Quickly generate a formatted git changelog (Features / Bug Fixes / Other Changes)
-# between the given commit-ish ($1) and HEAD, grouped by commit message prefixes.
-gnote() {
-  echo "## Features"
-  git log $1..HEAD --oneline --pretty=format:"* %s (%h)" | grep "feat:"
-  echo "\n## Bug Fixes"
-  git log $1..HEAD --oneline --pretty=format:"* %s (%h)" | grep "fix:"
-  echo "\n## Other Changes"
-  git log $1..HEAD --oneline --pretty=format:"* %s (%h)" | grep -vE "feat:|fix:"
+# opencode
+export PATH=/Users/vas/.opencode/bin:$PATH
+
+# gnote: generate release notes from git commits grouped by type, usage gnote -h for help
+source "$HOME/dotfiles/zsh/custom/gnote.zsh"
+
+# rmix: repomix git wrapper, usage rmix -h for help
+source "$HOME/dotfiles/zsh/custom/rmix.zsh"
+
+cca() {
+  (
+    export ANTHROPIC_API_KEY="sk-antigravity"
+    export ANTHROPIC_BASE_URL="http://127.0.0.1:8045"
+    echo "🚀 Starting Claude with custom proxy..."
+    claude "$@"
+  )
 }
 
-# Rmix, usage rmix -h for help
-source "$HOME/dotfiles/zsh/custom/rmix.zsh"
+claude-reset() {
+  unset ANTHROPIC_BASE_URL ANTHROPIC_AUTH_TOKEN ANTHROPIC_API_KEY
+  unset ANTHROPIC_MODEL ANTHROPIC_SMALL_FAST_MODEL
+  echo "Claude environment has been reset to default."
+}
+
