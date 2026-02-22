@@ -162,7 +162,7 @@ export GEMINI_API_KEY=$(security find-generic-password -a $USER -s GEMINI_API_KE
 export FIGMA_ACCESS_TOKEN=$(security find-generic-password -a $USER -s FIGMA_ACCESS_TOKEN -w)
 
 # Added by Antigravity
-export PATH="/Users/vas/.antigravity/antigravity/bin:$PATH"
+# export PATH="/Users/vas/.antigravity/antigravity/bin:$PATH"
 
 # opencode
 export PATH=/Users/vas/.opencode/bin:$PATH
@@ -173,18 +173,18 @@ source "$HOME/dotfiles/zsh/custom/gnote.zsh"
 # rmix: repomix git wrapper, usage rmix -h for help
 source "$HOME/dotfiles/zsh/custom/rmix.zsh"
 
+# setting claude code run with antigravity tool
 cca() {
   (
+    export PATH="/Users/vas/.antigravity/antigravity/bin:$PATH"
     export ANTHROPIC_API_KEY="sk-antigravity"
     export ANTHROPIC_BASE_URL="http://127.0.0.1:8045"
-    echo "🚀 Starting Claude with custom proxy..."
+    export ANTHROPIC_MODEL="claude-opus-4-6-thinking"
+    export ANTHROPIC_DEFAULT_OPUS_MODEL="claude-opus-4-6-thinking"
+    echo "🚀 Starting Claude with Antigravity proxy..."
     claude "$@"
   )
 }
 
-claude-reset() {
-  unset ANTHROPIC_BASE_URL ANTHROPIC_AUTH_TOKEN ANTHROPIC_API_KEY
-  unset ANTHROPIC_MODEL ANTHROPIC_SMALL_FAST_MODEL
-  echo "Claude environment has been reset to default."
-}
-
+fpath=(/Users/vas/.zsh/completions $fpath)
+autoload -Uz compinit && compinit

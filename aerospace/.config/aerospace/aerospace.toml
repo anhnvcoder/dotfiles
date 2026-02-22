@@ -282,5 +282,9 @@ run = 'move-node-to-workspace F'
 
 [[on-window-detected]]
 if.app-id = 'com.lbjlaq.antigravity-tools'
+run = 'move-node-to-workspace A'
+
+[[on-window-detected]]
+if.app-id = 'com.google.antigravity'
 run = 'move-node-to-workspace V'
 
