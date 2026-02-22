@@ -131,7 +131,8 @@ eval "$(starship init zsh)"
 export PATH="/opt/homebrew/opt/php@8.2/sbin:$PATH"
 export PATH="/opt/homebrew/opt/php@8.2/bin:$PATH"
 export PATH=${PATH}:/usr/local/mysql/bin/
-export PATH=$PATH:$(npm get prefix)/bin
+# export PATH=$PATH:$(npm get prefix)/bin
+export PATH="$(npm prefix -g)/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 export PYTHON="/opt/homebrew/bin/python3"
@@ -157,15 +158,20 @@ alias y=yarn
 
 # set key to keychain
 # security add-generic-password -a "$USER" -s GEMINI_API_KEY -w "YOUR_API_KEY" -U
-export GEMINI_API_KEY=$(security find-generic-password -a $USER -s GEMINI_API_KEY -w)
+if security find-generic-password -a "$USER" -s GEMINI_API_KEY -w >/dev/null 2>&1; then
+  export GEMINI_API_KEY="$(security find-generic-password -a "$USER" -s GEMINI_API_KEY -w)"
+fi
 # security add-generic-password -a "$USER" -s FIGMA_ACCESS_TOKEN -w "YOUR_FIGMA_ACCESS_TOKEN" -U
-export FIGMA_ACCESS_TOKEN=$(security find-generic-password -a $USER -s FIGMA_ACCESS_TOKEN -w)
+if security find-generic-password -a "$USER" -s FIGMA_ACCESS_TOKEN -w >/dev/null 2>&1; then
+  export FIGMA_ACCESS_TOKEN="$(security find-generic-password -a "$USER" -s FIGMA_ACCESS_TOKEN -w)"
+fi
 
 # Added by Antigravity
-# export PATH="/Users/vas/.antigravity/antigravity/bin:$PATH"
+export PATH="/Users/vas/.antigravity/antigravity/bin:$PATH"
 
-# opencode
-export PATH=/Users/vas/.opencode/bin:$PATH
+
+# lmstudio
+export PATH=/Users/vas/.lmstudio/bin:$PATH
 
 # gnote: generate release notes from git commits grouped by type, usage gnote -h for help
 source "$HOME/dotfiles/zsh/custom/gnote.zsh"

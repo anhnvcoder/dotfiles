@@ -48,23 +48,39 @@ config.window_padding = {
 	bottom = 0,
 }
 
+-- 4-panel layout: split current pane into 4 equal quadrants
+local function four_panel_layout(win, pane)
+  local right = pane:split({ direction = "Right", size = 0.5 })
+  pane:split({ direction = "Down", size = 0.5 })
+  right:split({ direction = "Down", size = 0.5 })
+end
+
 config.keys = {
-  {key="Enter", mods="SHIFT", action=wezterm.action{SendString="\x1b\r"}},
-  -- Split panes
-  {key="d", mods="CMD", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
-  {key="d", mods="CMD|SHIFT", action=wezterm.action{SplitVertical={domain="CurrentPaneDomain"}}},
-  -- Navigate panes (Cmd+Shift + hjkl)
-  {key="h", mods="CMD|SHIFT", action=wezterm.action{ActivatePaneDirection="Left"}},
-  {key="l", mods="CMD|SHIFT", action=wezterm.action{ActivatePaneDirection="Right"}},
-  {key="k", mods="CMD|SHIFT", action=wezterm.action{ActivatePaneDirection="Up"}},
-  {key="j", mods="CMD|SHIFT", action=wezterm.action{ActivatePaneDirection="Down"}},
-  -- Resize panes (Cmd+Ctrl + hjkl)
-  {key="h", mods="CMD|CTRL", action=wezterm.action{AdjustPaneSize={"Left", 5}}},
-  {key="l", mods="CMD|CTRL", action=wezterm.action{AdjustPaneSize={"Right", 5}}},
-  {key="k", mods="CMD|CTRL", action=wezterm.action{AdjustPaneSize={"Up", 5}}},
-  {key="j", mods="CMD|CTRL", action=wezterm.action{AdjustPaneSize={"Down", 5}}},
+  { key = "Enter", mods = "SHIFT", action = wezterm.action{ SendString = "\x1b\r" } },
+
+  -- Split panes theo 4 hướng (CMD+OPT + hjkl)
+  { key = "l", mods = "CMD|OPT", action = wezterm.action.SplitPane{ direction = "Right", size = { Percent = 50 } } },
+  { key = "h", mods = "CMD|OPT", action = wezterm.action.SplitPane{ direction = "Left",  size = { Percent = 50 } } },
+  { key = "j", mods = "CMD|OPT", action = wezterm.action.SplitPane{ direction = "Down",  size = { Percent = 50 } } },
+  { key = "k", mods = "CMD|OPT", action = wezterm.action.SplitPane{ direction = "Up",    size = { Percent = 50 } } },
+
+  -- 4-panel layout (CMD+4)
+  { key = "4", mods = "CMD", action = wezterm.action_callback(four_panel_layout) },
+
+  -- Navigate panes (CMD+SHIFT + hjkl)
+  { key = "h", mods = "CMD|SHIFT", action = wezterm.action{ ActivatePaneDirection = "Left" } },
+  { key = "l", mods = "CMD|SHIFT", action = wezterm.action{ ActivatePaneDirection = "Right" } },
+  { key = "k", mods = "CMD|SHIFT", action = wezterm.action{ ActivatePaneDirection = "Up" } },
+  { key = "j", mods = "CMD|SHIFT", action = wezterm.action{ ActivatePaneDirection = "Down" } },
+
+  -- Resize panes (CMD+CTRL + hjkl)
+  { key = "h", mods = "CMD|CTRL", action = wezterm.action{ AdjustPaneSize = { "Left",  5 } } },
+  { key = "l", mods = "CMD|CTRL", action = wezterm.action{ AdjustPaneSize = { "Right", 5 } } },
+  { key = "k", mods = "CMD|CTRL", action = wezterm.action{ AdjustPaneSize = { "Up",    5 } } },
+  { key = "j", mods = "CMD|CTRL", action = wezterm.action{ AdjustPaneSize = { "Down",  5 } } },
+
   -- Close pane
-  {key="w", mods="CMD", action=wezterm.action{CloseCurrentPane={confirm=true}}},
+  { key = "w", mods = "CMD", action = wezterm.action{ CloseCurrentPane = { confirm = true } } },
 }
 
 return config
