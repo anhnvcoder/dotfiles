@@ -155,6 +155,7 @@ alias dc="docker-compose"
 alias ghc="gh copilot"
 alias vim="nvim"
 alias y=yarn
+alias ol=ollama
 
 # set key to keychain
 # security add-generic-password -a "$USER" -s GEMINI_API_KEY -w "YOUR_API_KEY" -U
