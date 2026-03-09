@@ -13,10 +13,42 @@ config.window_background_image_hsb = {
 	saturation = 0.8,
 }
 
--- default background
-local bg_image = user_home .. "/dotfiles/wezterm/background/gohan.jpg"
+-- Generate a random seed based on memory address to avoid duplicates within the same second
+local seed = os.time() + tonumber(tostring({}):sub(-5), 16)
+math.randomseed(seed)
+-- Call random a few times to discard the initial predictable values
+math.random(); math.random(); math.random()
 
-config.window_background_image = bg_image
+-- Function to scan the directory for images and pick a random one
+local function get_random_bg()
+	local dir = user_home .. "/dotfiles/wezterm/background/"
+	local pattern = "ls " .. dir .. "*.jpg " .. dir .. "*.png " .. dir .. "*.jpeg " .. dir .. "*.webp 2>/dev/null"
+	local handle = io.popen(pattern)
+	local result = handle:read("*a")
+	handle:close()
+
+	local images = {}
+	for file in string.gmatch(result, "[^\r\n]+") do
+		table.insert(images, file)
+	end
+
+	if #images > 0 then
+		return images[math.random(#images)]
+	else
+		return dir .. "gohan.jpg" -- Fallback image if folder is empty
+	end
+end
+
+-- Listen for when a new WezTerm window is created or config is reloaded
+wezterm.on("window-config-reloaded", function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  
+  -- If this window hasn't been assigned a background override yet (e.g., new window via Cmd+N)
+  if not overrides.window_background_image then
+    overrides.window_background_image = get_random_bg()
+    window:set_config_overrides(overrides)
+  end
+end)
 -- end image setting
 
 config.color_scheme = "Tokyo Night"
@@ -58,7 +90,18 @@ end
 config.keys = {
   { key = "Enter", mods = "SHIFT", action = wezterm.action{ SendString = "\x1b\r" } },
 
-  -- Split panes theo 4 hướng (CMD+OPT + hjkl)
+  -- Shortcut to randomly change the background on the fly
+  {
+    key = "B",
+    mods = "CMD|SHIFT",
+    action = wezterm.action_callback(function(window, pane)
+      local overrides = window:get_config_overrides() or {}
+      overrides.window_background_image = get_random_bg()
+      window:set_config_overrides(overrides)
+    end),
+  },
+
+  -- Split panes in 4 directions (CMD+OPT + hjkl)
   { key = "l", mods = "CMD|OPT", action = wezterm.action.SplitPane{ direction = "Right", size = { Percent = 50 } } },
   { key = "h", mods = "CMD|OPT", action = wezterm.action.SplitPane{ direction = "Left",  size = { Percent = 50 } } },
   { key = "j", mods = "CMD|OPT", action = wezterm.action.SplitPane{ direction = "Down",  size = { Percent = 50 } } },
