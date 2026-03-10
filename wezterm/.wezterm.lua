@@ -1,7 +1,7 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 local os = require("os")
-local brightness = 0.008
+local brightness = 0.015
 
 -- image setting
 local user_home = os.getenv("HOME")
@@ -10,14 +10,16 @@ config.window_background_image_hsb = {
 	-- Darken the background image by reducing it
 	brightness = brightness,
 	hue = 1.0,
-	saturation = 0.8,
+	saturation = 1.0,
 }
 
 -- Generate a random seed based on memory address to avoid duplicates within the same second
 local seed = os.time() + tonumber(tostring({}):sub(-5), 16)
 math.randomseed(seed)
 -- Call random a few times to discard the initial predictable values
-math.random(); math.random(); math.random()
+math.random()
+math.random()
+math.random()
 
 -- Function to scan the directory for images and pick a random one
 local function get_random_bg()
@@ -41,13 +43,13 @@ end
 
 -- Listen for when a new WezTerm window is created or config is reloaded
 wezterm.on("window-config-reloaded", function(window, pane)
-  local overrides = window:get_config_overrides() or {}
-  
-  -- If this window hasn't been assigned a background override yet (e.g., new window via Cmd+N)
-  if not overrides.window_background_image then
-    overrides.window_background_image = get_random_bg()
-    window:set_config_overrides(overrides)
-  end
+	local overrides = window:get_config_overrides() or {}
+
+	-- If this window hasn't been assigned a background override yet (e.g., new window via Cmd+N)
+	if not overrides.window_background_image then
+		overrides.window_background_image = get_random_bg()
+		window:set_config_overrides(overrides)
+	end
 end)
 -- end image setting
 
@@ -82,48 +84,52 @@ config.window_padding = {
 
 -- 4-panel layout: split current pane into 4 equal quadrants
 local function four_panel_layout(win, pane)
-  local right = pane:split({ direction = "Right", size = 0.5 })
-  pane:split({ direction = "Down", size = 0.5 })
-  right:split({ direction = "Down", size = 0.5 })
+	local right = pane:split({ direction = "Right", size = 0.5 })
+	pane:split({ direction = "Down", size = 0.5 })
+	right:split({ direction = "Down", size = 0.5 })
 end
 
 config.keys = {
-  { key = "Enter", mods = "SHIFT", action = wezterm.action{ SendString = "\x1b\r" } },
+	{ key = "Enter", mods = "SHIFT", action = wezterm.action({ SendString = "\x1b\r" }) },
 
-  -- Shortcut to randomly change the background on the fly
-  {
-    key = "B",
-    mods = "CMD|SHIFT",
-    action = wezterm.action_callback(function(window, pane)
-      local overrides = window:get_config_overrides() or {}
-      overrides.window_background_image = get_random_bg()
-      window:set_config_overrides(overrides)
-    end),
-  },
+	-- Shortcut to randomly change the background on the fly
+	{
+		key = "B",
+		mods = "CMD|SHIFT",
+		action = wezterm.action_callback(function(window, pane)
+			local overrides = window:get_config_overrides() or {}
+			overrides.window_background_image = get_random_bg()
+			window:set_config_overrides(overrides)
+		end),
+	},
 
-  -- Split panes in 4 directions (CMD+OPT + hjkl)
-  { key = "l", mods = "CMD|OPT", action = wezterm.action.SplitPane{ direction = "Right", size = { Percent = 50 } } },
-  { key = "h", mods = "CMD|OPT", action = wezterm.action.SplitPane{ direction = "Left",  size = { Percent = 50 } } },
-  { key = "j", mods = "CMD|OPT", action = wezterm.action.SplitPane{ direction = "Down",  size = { Percent = 50 } } },
-  { key = "k", mods = "CMD|OPT", action = wezterm.action.SplitPane{ direction = "Up",    size = { Percent = 50 } } },
+	-- Split panes in 4 directions (CMD+OPT + hjkl)
+	{
+		key = "l",
+		mods = "CMD|OPT",
+		action = wezterm.action.SplitPane({ direction = "Right", size = { Percent = 50 } }),
+	},
+	{ key = "h", mods = "CMD|OPT", action = wezterm.action.SplitPane({ direction = "Left", size = { Percent = 50 } }) },
+	{ key = "j", mods = "CMD|OPT", action = wezterm.action.SplitPane({ direction = "Down", size = { Percent = 50 } }) },
+	{ key = "k", mods = "CMD|OPT", action = wezterm.action.SplitPane({ direction = "Up", size = { Percent = 50 } }) },
 
-  -- 4-panel layout (CMD+4)
-  { key = "4", mods = "CMD", action = wezterm.action_callback(four_panel_layout) },
+	-- 4-panel layout (CMD+4)
+	{ key = "4", mods = "CMD", action = wezterm.action_callback(four_panel_layout) },
 
-  -- Navigate panes (CMD+SHIFT + hjkl)
-  { key = "h", mods = "CMD|SHIFT", action = wezterm.action{ ActivatePaneDirection = "Left" } },
-  { key = "l", mods = "CMD|SHIFT", action = wezterm.action{ ActivatePaneDirection = "Right" } },
-  { key = "k", mods = "CMD|SHIFT", action = wezterm.action{ ActivatePaneDirection = "Up" } },
-  { key = "j", mods = "CMD|SHIFT", action = wezterm.action{ ActivatePaneDirection = "Down" } },
+	-- Navigate panes (CMD+SHIFT + hjkl)
+	{ key = "h", mods = "CMD|SHIFT", action = wezterm.action({ ActivatePaneDirection = "Left" }) },
+	{ key = "l", mods = "CMD|SHIFT", action = wezterm.action({ ActivatePaneDirection = "Right" }) },
+	{ key = "k", mods = "CMD|SHIFT", action = wezterm.action({ ActivatePaneDirection = "Up" }) },
+	{ key = "j", mods = "CMD|SHIFT", action = wezterm.action({ ActivatePaneDirection = "Down" }) },
 
-  -- Resize panes (CMD+CTRL + hjkl)
-  { key = "h", mods = "CMD|CTRL", action = wezterm.action{ AdjustPaneSize = { "Left",  5 } } },
-  { key = "l", mods = "CMD|CTRL", action = wezterm.action{ AdjustPaneSize = { "Right", 5 } } },
-  { key = "k", mods = "CMD|CTRL", action = wezterm.action{ AdjustPaneSize = { "Up",    5 } } },
-  { key = "j", mods = "CMD|CTRL", action = wezterm.action{ AdjustPaneSize = { "Down",  5 } } },
+	-- Resize panes (CMD+CTRL + hjkl)
+	{ key = "h", mods = "CMD|CTRL", action = wezterm.action({ AdjustPaneSize = { "Left", 5 } }) },
+	{ key = "l", mods = "CMD|CTRL", action = wezterm.action({ AdjustPaneSize = { "Right", 5 } }) },
+	{ key = "k", mods = "CMD|CTRL", action = wezterm.action({ AdjustPaneSize = { "Up", 5 } }) },
+	{ key = "j", mods = "CMD|CTRL", action = wezterm.action({ AdjustPaneSize = { "Down", 5 } }) },
 
-  -- Close pane
-  { key = "w", mods = "CMD", action = wezterm.action{ CloseCurrentPane = { confirm = true } } },
+	-- Close pane
+	{ key = "w", mods = "CMD", action = wezterm.action({ CloseCurrentPane = { confirm = true } }) },
 }
 
 return config
