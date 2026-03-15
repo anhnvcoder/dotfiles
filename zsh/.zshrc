@@ -180,16 +180,49 @@ source "$HOME/dotfiles/zsh/custom/gnote.zsh"
 # rmix: repomix git wrapper, usage rmix -h for help
 source "$HOME/dotfiles/zsh/custom/rmix.zsh"
 
-# setting claude code run with antigravity tool
-cca() {
+# ccg: claude code gpt - run Claude Code CLI with GPT model via Proxypal
+# Usage: ccg [xhigh|high|medium|low|none] [claude args...]
+#        ccg [--thinking|-t <level>] [claude args...]
+# Thinking levels: xhigh, high, medium, low, none/off (default: high)
+# Default thinking: high (or set CCG_THINKING env var)
+ccg() {
+  local thinking="${CCG_THINKING:-high}"
+  local args=()
+
+  # Check if first arg is a valid thinking level (shorthand)
+  case "${1:-}" in
+    xhigh|high|medium|low|none|off)
+      thinking="$1"
+      shift
+      ;;
+  esac
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --thinking|-t)
+        thinking="$2"
+        shift 2
+        ;;
+      *)
+        args+=("$1")
+        shift
+        ;;
+    esac
+  done
+
+  local model
+  if [[ "$thinking" == "none" || "$thinking" == "off" ]]; then
+    model="gpt-5.4"
+  else
+    model="gpt-5.4(${thinking})"
+  fi
+
   (
-    export PATH="/Users/vas/.antigravity/antigravity/bin:$PATH"
-    export ANTHROPIC_API_KEY="sk-antigravity"
-    export ANTHROPIC_BASE_URL="http://127.0.0.1:8045"
-    export ANTHROPIC_MODEL="claude-opus-4-6-thinking"
-    export ANTHROPIC_DEFAULT_OPUS_MODEL="claude-opus-4-6-thinking"
-    echo "🚀 Starting Claude with Antigravity proxy..."
-    claude "$@"
+    export ANTHROPIC_API_KEY="proxypal-local"
+    export ANTHROPIC_BASE_URL="http://127.0.0.1:8317"
+    export ANTHROPIC_MODEL="$model"
+    echo "🚀 Starting Claude with Proxypal [model: ${model}] ..."
+    claude "${args[@]}"
   )
 }
 

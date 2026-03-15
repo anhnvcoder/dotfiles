@@ -32,7 +32,7 @@ require("lazy").setup({
   },
   install = { colorscheme = { "tokyonight", "habamax" } },
   checker = {
-    enabled = true, -- check for plugin updates periodically
+    enabled = false, -- only check for updates when requested manually
     notify = false, -- notify on update
   }, -- automatically check for plugin updates
   performance = {
