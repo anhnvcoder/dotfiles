@@ -166,6 +166,10 @@ fi
 if security find-generic-password -a "$USER" -s FIGMA_ACCESS_TOKEN -w >/dev/null 2>&1; then
   export FIGMA_ACCESS_TOKEN="$(security find-generic-password -a "$USER" -s FIGMA_ACCESS_TOKEN -w)"
 fi
+# security add-generic-password -a "$USER" -s CLAUDE_CODE_OAUTH_TOKEN -w "CLAUDE_CODE_OAUTH_TOKEN" -U
+if security find-generic-password -a "$USER" -s CLAUDE_CODE_OAUTH_TOKEN -w >/dev/null 2>&1; then
+  export CLAUDE_CODE_OAUTH_TOKEN="$(security find-generic-password -a "$USER" -s CLAUDE_CODE_OAUTH_TOKEN -w)"
+fi
 
 # Added by Antigravity
 export PATH="/Users/vas/.antigravity/antigravity/bin:$PATH"
